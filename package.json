@@ -1,0 +1,36 @@
+{
+  "name": "language-cli",
+  "version": "1.0.0",
+  "description": "a cli to extract specific languages text of your file",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx tsc",
+    "dev": "npx tsc -w"
+  },
+  "compilerOptions": {
+    "esModuleInterop": true
+  },
+  "bin": {
+    "language": "./bin/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/04756/language-extract.git"
+  },
+  "keywords": [],
+  "author": "04756",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/04756/language-extract/issues"
+  },
+  "homepage": "https://github.com/04756/language-extract#readme",
+  "dependencies": {
+    "commander": "^12.1.0",
+    "recast": "^0.23.9"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "typescript": "^5.7.2"
+  }
+}

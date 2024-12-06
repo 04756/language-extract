@@ -1,0 +1,5 @@
+{
+  "src": "./test-project",
+  "ignore": "./test-project/ignore",
+  "output": "./test-project/output"
+}

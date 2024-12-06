@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "rootDir": "./",
+    "outDir": "dist",
+    "strict": true,
+    "target": "es6",
+    "module": "commonjs",
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "jsx": "react-jsx",
+    "declaration": true,
+  },
+  "include": ["./utils", "./bin"],
+  "exclude": ["./examples", "./dist"],
+  "typeRoots": ["./node_modules/@types"]
+}
