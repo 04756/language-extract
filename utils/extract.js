@@ -1,40 +1,25 @@
-const { parse, visit } = require('recast');
-const { getFileContent, getFilesPath, getFilesContent } = require('./file');
+const { writeFileContent } = require('./file');
 const path = require('path');
-const { visitStringLiteral, visitTemplateElement } = require('./recast');
+const { getState } = require('../stores/global');
+const fs = require('fs');
 
-const replace = (content) => {
-  // find all chinese words in the content
-  const ast = parse(content);
-
-  visit(ast, {
-    visitStringLiteral: visitStringLiteral,
-    visitTemplateElement: visitTemplateElement,
-    visitLiteral: visitStringLiteral,
-  })
-}
 
 const run = () => {
   // read config json
   try {
-    const configs = JSON.parse(getFileContent(path.resolve('./language-cli.config.json')));
+    const globalState = getState();
 
-    console.log('> Loading files...')
-
-    // find all files which match the file pattern
-    const allFilesPath = getFilesPath(path.resolve(configs.src), '*', configs.ignore);
-    // read all files content
-    const allFilesContent = getFilesContent(allFilesPath);
-
-    console.log('> Loaded files...')
+    const temp = {};
+    globalState.langsExtract.map((lang) => temp[lang] = lang);
 
     console.log('> Extract words...')
-
-    for (let filePath in allFilesContent) {
-      const content = replace(allFilesContent[filePath]);
+    const filePath = path.resolve(`${globalState?.configs?.output}/extract.json`);
+    if (!fs.existsSync(globalState?.configs?.output)) {
+      fs.mkdirSync(globalState?.configs?.output);
     }
 
-    return allFilesContent;
+    writeFileContent(filePath, JSON.stringify(temp, null, 2));
+    console.log('> All files extracted, file destination', filePath);
 
   } catch (e) {
     throw e;

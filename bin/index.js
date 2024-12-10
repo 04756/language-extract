@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 const { program } = require('commander');
 const { extract } = require('../utils/extract');
+const { count } = require('../utils/count');
+const { wrap } = require('../utils/wrap');
+const { init } = require('../utils/init');
 
 program
   .version('1.0.0', '-v, --version', 'show version')
@@ -9,8 +12,14 @@ program
   .option('-c, --count', 'count specific language words in files')
   .option('-w, --wrap', 'wrap words with specific function')
   .action((opts) => {
+    init();
+    count();
+
     if (opts.extract) {
       extract();
+    }
+    if (opts.wrap) {
+      wrap();
     }
   })
 

@@ -27,7 +27,8 @@
   "homepage": "https://github.com/04756/language-extract#readme",
   "dependencies": {
     "commander": "^12.1.0",
-    "recast": "^0.23.9"
+    "recast": "^0.23.9",
+    "zustand": "^5.0.2"
   },
   "devDependencies": {
     "@types/node": "^22.10.1",
