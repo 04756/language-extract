@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 // read all file path in folrder
-const getFilesPath = (dirPath, filePattern, ignorePath) => {
+const getFilesPath = (dirPath, filePattern, ignorePaths, ignoreTypes) => {
   let files = fs.readdirSync(dirPath);
   let jsonFiles = [];
 
@@ -11,14 +11,12 @@ const getFilesPath = (dirPath, filePattern, ignorePath) => {
     let stats = fs.statSync(filePath);
 
     if (stats.isDirectory()) {
-      jsonFiles = jsonFiles.concat(getFilesPath(filePath, filePattern, ignorePath));
+      jsonFiles = jsonFiles.concat(getFilesPath(filePath, filePattern, ignorePaths, ignoreTypes));
     } else {
-      // if (path.extname(fileName) === filePattern) 
-      const isInIgnorePath = ignorePath ? filePath.match(path.resolve(ignorePath)) : false;
-      if (!isInIgnorePath) { jsonFiles.push(filePath); }
+      const isInIgnorePath = ignorePaths?.length ? ignorePaths?.some((p) => filePath.match(path.resolve(p))) : false;
+      if (!isInIgnorePath && !ignoreTypes?.some((type) => (path.extname(fileName) === type))) { jsonFiles.push(filePath); }
     }
   }
-
   return jsonFiles;
 };
 

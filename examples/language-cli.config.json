@@ -1,5 +1,8 @@
 {
   "src": "./test-project",
-  "ignore": "./test-project/ignore",
+  "ignore": {
+    "folders": ["./test-project/ignore"],
+    "fileTypes": [".json"]
+  },
   "output": "./test-project/output"
 }

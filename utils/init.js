@@ -16,7 +16,7 @@ const run = () => {
     console.log('> Loading files...')
 
     // find all files which match the file pattern
-    const allFilesPath = getFilesPath(path.resolve(configs.src), '*', configs.ignore);
+    const allFilesPath = getFilesPath(path.resolve(configs.src), '*', configs.ignore?.folders, configs.ignore?.fileTypes);
     // read all files content
     const allFilesContent = getFilesContent(allFilesPath);
 
