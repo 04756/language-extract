@@ -2,7 +2,7 @@ const { getFileContent, getFilesPath, getFilesContent } = require('./file');
 const path = require('path');
 const { getState } = require('../stores/global');
 
-const run = () => {
+const run = ({ quiet }) => {
   // read config json
   try {
     const globalState = getState();
@@ -16,7 +16,7 @@ const run = () => {
     console.log('> Loading files...')
 
     // find all files which match the file pattern
-    const allFilesPath = getFilesPath(path.resolve(configs.src), '*', configs.ignore?.folders, configs.ignore?.fileTypes);
+    const allFilesPath = getFilesPath(path.resolve(configs.src), configs?.fileTypes || '.*', { ignorePaths: configs.ignore?.folders, ignoreTypes: configs.ignore?.fileTypes, quiet });
     // read all files content
     const allFilesContent = getFilesContent(allFilesPath);
 

@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 // read all file path in folrder
-const getFilesPath = (dirPath, filePattern, ignorePaths, ignoreTypes) => {
+const getFilesPath = (dirPath, fileTypes, { ignorePaths, ignoreTypes, quiet }) => {
   let files = fs.readdirSync(dirPath);
   let jsonFiles = [];
 
@@ -10,11 +10,32 @@ const getFilesPath = (dirPath, filePattern, ignorePaths, ignoreTypes) => {
     let filePath = path.join(dirPath, fileName);
     let stats = fs.statSync(filePath);
 
+    const isInIgnorePath = ignorePaths?.length ? ignorePaths?.some((p) => filePath.match(path.resolve(p))) : false;
+
+    if (isInIgnorePath) {
+      if (!quiet) {
+        console.log('> ignore path:', filePath);
+      }
+
+      continue;
+    }
+
     if (stats.isDirectory()) {
-      jsonFiles = jsonFiles.concat(getFilesPath(filePath, filePattern, ignorePaths, ignoreTypes));
+      jsonFiles = jsonFiles.concat(getFilesPath(filePath, fileTypes, { ignorePaths, ignoreTypes, quiet }));
     } else {
-      const isInIgnorePath = ignorePaths?.length ? ignorePaths?.some((p) => filePath.match(path.resolve(p))) : false;
-      if (!isInIgnorePath && !ignoreTypes?.some((type) => (path.extname(fileName) === type))) { jsonFiles.push(filePath); }
+      const isIgnoreFileType = ignoreTypes?.some((type) => (path.extname(fileName) === type || fileName.match(new RegExp(`/${type}$/`, 'i'))));
+
+      if (isIgnoreFileType) {
+        if (!quiet) {
+          console.log('> ignore file type:', filePath);
+        }
+
+        continue;
+      }
+
+      const isBelongSpecifiTypes = fileTypes?.some((type) => (path.extname(fileName) === type || fileName.match(new RegExp(`/${type}$/`, 'i'))));
+
+      if (!isInIgnorePath && isBelongSpecifiTypes) { jsonFiles.push(filePath); }
     }
   }
   return jsonFiles;

@@ -3,28 +3,26 @@ const path = require('path');
 const { visitStringLiteral, visitTemplateElement } = require('./recast');
 const { getState } = require('../stores/global');
 
-const count = (path, content) => {
-
+const count = (path, content, quiet) => {
   try {
-  const ast = parse(content);
-
+    const ast = parse(content);
     visit(ast, {
       visitStringLiteral: visitStringLiteral,
       visitTemplateElement: visitTemplateElement,
       visitLiteral: visitStringLiteral,
     })
   } catch (e) {
-    throw e;
+    console.error('> loading file error: ', path, quiet ? '' : e);
   }
 }
 
-const run = () => {
+const run = ({ quiet }) => {
   // read config json
   try {
     const allFilesContent = getState()?.filesContent;
 
     for (let filePath in allFilesContent) {
-      count(filePath, allFilesContent[filePath]);
+      count(filePath, allFilesContent[filePath], quiet);
     }
 
     const globalState = getState();

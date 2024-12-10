@@ -1,8 +1,9 @@
 {
   "src": "./test-project",
+  "fileTypes": [".js",".jsx",".ts",".tsx"],
   "ignore": {
-    "folders": ["./test-project/ignore"],
-    "fileTypes": [".json"]
+    "folders": ["./test-project/ignore", ".*output", ".*dist$"],
+    "fileTypes": [".json", "\\.env.*", ".DS_Store", ".babelrc.js", "env"]
   },
   "output": "./test-project/output"
 }

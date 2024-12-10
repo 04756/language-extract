@@ -11,9 +11,10 @@ program
   .option('-e, --extract', 'extract specific language words in files')
   .option('-c, --count', 'count specific language words in files')
   .option('-w, --wrap', 'wrap words with specific function')
+  .option('-q, --quiet', 'loading file without detail')
   .action((opts) => {
-    init();
-    count();
+    init({ quiet: opts.quiet });
+    count({ quiet: opts.quiet });
 
     if (opts.extract) {
       extract();

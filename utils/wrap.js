@@ -23,18 +23,7 @@ const replace = (path, content) => {
 const run = () => {
   // read config json
   try {
-    const configs = JSON.parse(getFileContent(path.resolve('./language-cli.config.json')));
-
-    console.log('> Loading files...')
-
-    // find all files which match the file pattern
-    const allFilesPath = getFilesPath(path.resolve(configs.src), '*', configs.ignore);
-    // read all files content
-    const allFilesContent = getFilesContent(allFilesPath);
-
-    console.log('> Loaded files...')
-
-    console.log('> Extract and replace words...')
+    const allFilesContent = getState()?.filesContent;
 
     for (let filePath in allFilesContent) {
       replace(filePath, allFilesContent[filePath]);
