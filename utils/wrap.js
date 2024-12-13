@@ -1,28 +1,33 @@
 const { parse, visit } = require('recast');
 const { getFileContent, getFilesPath, getFilesContent, writeFileContent } = require('./file');
 const path = require('path');
-const { replaceStringLiteral } = require('./recast');
+const { replaceStringLiteral, replaceTemplateLiteral } = require('./recast');
 const { getState } = require('../stores/global');
 const { print } = require('recast');
 
 
 const replace = (path, content) => {
+  try {
+
   // find all chinese words in the content
   const ast = parse(content);
 
   // temperary not support template element
   visit(ast, {
     visitStringLiteral: replaceStringLiteral,
-    // visitTemplateElement: replaceTemplateElement,
+    visitTemplateLiteral: replaceTemplateLiteral,
     visitLiteral: replaceStringLiteral,
   })
 
   writeFileContent(path, print(ast).code);
+  } catch (e) {
+    console.log('> Extract and wrap words failed, file path: ', path)
+    throw e;
+  }
 }
 
 const run = () => {
   // read config json
-  try {
     const allFilesContent = getState()?.filesContent;
 
     for (let filePath in allFilesContent) {
@@ -33,9 +38,7 @@ const run = () => {
 
     return allFilesContent;
 
-  } catch (e) {
-    throw e;
-  }
+
 };
 
 exports.wrap = run;

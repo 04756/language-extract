@@ -2,6 +2,8 @@
 
 Extracts chinese text based on configuration for easy summarisation of internationalised dictionaries.
 
+Now is only support chinese text be extracted or counted, text match regex pattern are in future design now.
+
 
 ## Quick Start
 
@@ -71,7 +73,8 @@ Options:
 
 ```src``` : cli work source folder
 
-```fileTypes```: cli only work in specific file types. ```fileType``` is not conflict with ```ignore.fileTypes```, they work together
+```fileTypes```: cli only work in specific file types.
+If exist conficts bettween ```fileType``` and ```ignore.fileTypes```, ```ignore.fileTypes``` priority is higher.
 
 ```ignore```: cli will not work in specific folders or specific file types
 ```
@@ -82,3 +85,27 @@ Options:
 ```
 
 ```output```: the result of text extract will be written in output folder
+
+## Features
+
+- Effect of processing string templates
+
+Input:
+```js
+const a = `这是需要被包裹的中文 ${test}`
+```
+After use <code>language run -w</code>, the output will be as follow:
+```js
+const a = `${t('这是需要被包裹的中文')} ${test}`
+```
+
+If the variable are in the middle of the template.
+
+Input:
+```js
+const a = `这是需要被包裹的中文 ${test} 变量在中间`
+```
+After use <code>language run -w</code>, the output will be as follow:
+```js
+const a = `${t('这是需要被包裹的中文')} ${test} ${t('变量在中间')}`
+```
