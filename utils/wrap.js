@@ -1,6 +1,5 @@
 const { parse, visit } = require('recast');
-const { getFileContent, getFilesPath, getFilesContent, writeFileContent } = require('./file');
-const path = require('path');
+const { writeFileContent } = require('./file');
 const { replaceStringLiteral, replaceTemplateLiteral } = require('./recast');
 const { getState } = require('../stores/global');
 const { print } = require('recast');

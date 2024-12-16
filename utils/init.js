@@ -2,14 +2,14 @@ const { getFileContent, getFilesPath, getFilesContent } = require('./file');
 const path = require('path');
 const { getState } = require('../stores/global');
 
-const run = ({ quiet }) => {
+const run = ({ quiet, configSrc }) => {
   // read config json
   try {
     const globalState = getState();
 
     console.log('> Loading config file...')
 
-    const configs = JSON.parse(getFileContent(path.resolve('./language-cli.config.json')));
+    const configs = JSON.parse(getFileContent(path.resolve(configSrc || './language-cli.config.json')));
     globalState.setConfigs(configs);
 
 

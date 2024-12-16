@@ -37,18 +37,18 @@ function replaceStringLiteral(path) {
     }
     // new text wrapped by function
     const newText = astBuilder.expressionStatement(astBuilder.callExpression(identifier('t'), [astBuilder.literal(text)]));
+    // use recast.print replace ';'
+    const expressionCode = print(newText).code.replace(/;$/, '');
 
     // if in JSXElment
     if (tnt.JSXElement.check(parent.node)) {
-      // use recast.print replace ';'
-      const expressionCode = print(newText).code.replace(/;$/, '');
       // re parse expressionCode
       path.replace(astBuilder.blockStatement([parse(expressionCode).program.body[0]]));
       this.traverse(path);
       return false;
     }
 
-    path.replace(newText);
+    path.replace(parse(expressionCode).program.body[0]);
   }
 
   this.traverse(path);
@@ -73,42 +73,22 @@ function visitTemplateElement(path) {
 }
 
 function replaceTemplateLiteral(path) {
-  const reg = /[\u4e00-\u9fa5]/g;
+  const reg = /(?<!t\(|t\()[\u4e00-\u9fa5]+(?![^']*'\)|[^"]*"\))/g;
 
 
   const { node } = path;
-  const pendingWraped = [];
 
-  const quasis = node.quasis.map((element, index) => {
-    const { value } = element;
-    const { raw } = value;
-    if (raw && reg.test(raw)) {
-      console.log('in')
-      // new text wrapped by function
-      const newText = astBuilder.callExpression(identifier('t'), [astBuilder.stringLiteral(raw)]);
-      pendingWraped.push({
-        text: newText,
-        index
-      })
-      return astBuilder.templateElement({
-        raw: '',
-        cooked: ''
-      }, index === node.quasis?.length - 1);
-    }
-    return element;
+  const originalStr = print(node).code;
+  const result = originalStr.replace(reg, (match) => {
+    return `\${t("${match}")}`;
   });
 
-  const expressions = node.expressions;
-
-  pendingWraped.map((item => {
-    // insert new text in expressions
-    expressions.splice(item.index, 0, item.text);
-  }))
-
-  // 替换原来的模板字符串节点
-  path.replace(
-    astBuilder.templateLiteral(quasis, expressions)
-  );
+  if (result !== originalStr) {
+    // replace old string template
+    path.replace(
+      parse(result)
+    );
+  }
 
   return false;
 
