@@ -1,8 +1,9 @@
+const { visit } = require("recast");
 const { getState } = require("../stores/global");
 const { types, print, parse } = require('recast');
 const astBuilder = types.builders
 const tnt = types.namedTypes;
-const { assignmentExpression, identifier, blockStatement, arrowFunctionExpression } = astBuilder;
+const { identifier } = astBuilder;
 
 function visitStringLiteral(path) {
 
@@ -95,7 +96,44 @@ function replaceTemplateLiteral(path) {
 }
 
 
+function hasMethod(ast, methodName) {
+  let hasMethod = false;
+
+  visit(ast, {
+    visitImportAttribute: function (path) {
+      if (path.node.name === methodName) {
+        hasMethod = true;
+      }
+      return false;
+    }
+  });
+
+  return hasMethod;
+}
+
+function insertImport(ast, {
+  functionName,
+  functionAlias,
+  isDefault
+}, moduleName) {
+  if (!hasMethod(ast, functionName)) {
+    if (!functionName) {
+      console.error('Warning: lack of function name');
+      return;
+    }
+    const importStatement = astBuilder.importDeclaration(
+      [isDefault ? astBuilder.importDefaultSpecifier(functionName) :
+        astBuilder.importSpecifier(astBuilder.identifier(functionName), astBuilder.identifier(functionAlias || functionName))],
+      astBuilder.stringLiteral(moduleName)
+    );
+
+    ast.program.body.unshift(importStatement);
+  }
+}
+
+
 exports.visitStringLiteral = visitStringLiteral;
 exports.replaceStringLiteral = replaceStringLiteral;
 exports.visitTemplateElement = visitTemplateElement;
 exports.replaceTemplateLiteral = replaceTemplateLiteral;
+exports.insertImport = insertImport;

@@ -24,7 +24,13 @@ create new file named ```language-cli.config.json```
     "folders": ["./test-project/ignore", ".*output", ".*dist$"],
     "fileTypes": [".json", "\\.env.*", ".DS_Store", ".babelrc.js", "env"]
   },
-  "output": "./test-project/output"
+  "output": "./test-project/output",
+  "importFunction": {
+    "functionName": "t",
+    "functionAlias": "t",
+    "moduleName": "i18Next",
+    "isDefault" : false
+  }
 }
 ```
 
@@ -79,12 +85,30 @@ If exist conficts bettween ```fileType``` and ```ignore.fileTypes```, ```ignore.
 ```ignore```: cli will not work in specific folders or specific file types
 ```
 "ignore": {
-    "folders": ["./test-project/ignore"],
-    "fileTypes": [".json"]
-  }
+  "folders": ["./test-project/ignore"],
+  "fileTypes": [".json"]
+}
 ```
 
 ```output```: the result of text extract will be written in output folder
+
+```importFunction```: the function translate use, the details of obj are show in follow,
+```
+"importFunction": {
+  "functionName": "t",
+  "functionAlias": "t",
+  "moduleName": "i18Next",
+  "isDefault" : false
+}
+```
+  - if set <code>isDefault</code> as true, the output will like 
+  ```
+  import t from 'i18Next';
+  ```
+  else, the output will like
+  ```
+  import { t } from 'i18Next';
+  ```
 
 ## Features
 

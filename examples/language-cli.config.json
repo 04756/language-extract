@@ -5,5 +5,11 @@
     "folders": ["./test-project/ignore", ".*output", ".*dist$"],
     "fileTypes": [".json", "\\.env.*", ".DS_Store", ".babelrc.js", "env"]
   },
-  "output": "./test-project/output"
+  "output": "./test-project/output",
+  "importFunction": {
+    "functionName": "t",
+    "functionAlias": "t",
+    "moduleName": "i18Next",
+    "isDefault" : false
+  }
 }

@@ -1,6 +1,6 @@
 {
   "name": "language-cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "a cli to extract specific languages text of your file",
   "main": "./src/index.js",
   "scripts": {

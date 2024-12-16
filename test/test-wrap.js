@@ -1,3 +1,4 @@
+const { extract } = require("../utils/extract");
 const { count } = require("../utils/count");
 const { init } = require("../utils/init");
 const { wrap } = require("../utils/wrap");
