@@ -9,9 +9,11 @@ const run = ({ quiet, configSrc }) => {
 
     console.log('> Loading config file...')
 
-    const configs = JSON.parse(getFileContent(path.resolve(configSrc || './language-cli.config.json')));
+    const configFileSrc = path.resolve(configSrc || './language-cli.config.json');
+    const configs = JSON.parse(getFileContent(configFileSrc));
     globalState.setConfigs(configs);
 
+    console.log('> Loading config file successed, file path:', configFileSrc);
 
     console.log('> Loading files...')
 
@@ -22,7 +24,7 @@ const run = ({ quiet, configSrc }) => {
 
     globalState.setFilesContent(allFilesContent);
 
-    console.log('> Loading files finished')
+    console.log('> Loading files finished, files amount: ', allFilesPath.length);
 
   } catch (e) {
     console.log('> Loading config file error')

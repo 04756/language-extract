@@ -4,7 +4,7 @@ const { getState } = require('../stores/global');
 const fs = require('fs');
 
 
-const run = () => {
+const run = (opts) => {
   // read config json
   try {
     const globalState = getState();
@@ -22,7 +22,9 @@ const run = () => {
     console.log('> All files extracted, file destination', filePath);
 
   } catch (e) {
-    throw e;
+    if (!opts?.quiet) {
+      console.error('> Extract failed: ', e);
+    }
   }
 };
 

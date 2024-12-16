@@ -18,7 +18,15 @@
     "type": "git",
     "url": "git+https://github.com/04756/language-extract.git"
   },
-  "keywords": [],
+  "keywords": [
+    "language",
+    "i18next",
+    "multi-lan",
+    "extract",
+    "localization",
+    "globalization",
+    "format"
+  ],
   "author": "04756",
   "license": "MIT",
   "bugs": {
@@ -26,6 +34,7 @@
   },
   "homepage": "https://github.com/04756/language-extract#readme",
   "dependencies": {
+    "@babel/parser": "^7.26.3",
     "commander": "^12.1.0",
     "recast": "^0.23.9",
     "zustand": "^5.0.2"

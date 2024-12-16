@@ -96,13 +96,20 @@ function replaceTemplateLiteral(path) {
 }
 
 
-function hasMethod(ast, methodName) {
+function hasMethod(ast, functionName) {
   let hasMethod = false;
 
   visit(ast, {
     visitImportAttribute: function (path) {
-      if (path.node.name === methodName) {
+      if (path.node?.name === functionName) {
         hasMethod = true;
+      }
+      return false;
+    },
+    visitImportSpecifier: function (path) {
+      if (path.node.local?.name === functionName) {
+        hasMethod = true;
+
       }
       return false;
     }

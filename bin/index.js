@@ -13,14 +13,14 @@ program
   .option('-w, --wrap', 'wrap words with specific function')
   .option('-q, --quiet', 'loading file without detail')
   .action((opts) => {
-    init({ quiet: opts.quiet });
-    count({ quiet: opts.quiet });
+    init(opts);
+    count(opts);
 
     if (opts.extract) {
-      extract();
+      extract(opts);
     }
     if (opts.wrap) {
-      wrap();
+      wrap(opts);
     }
   })
 

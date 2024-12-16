@@ -2,10 +2,13 @@ const { parse, visit } = require('recast');
 const path = require('path');
 const { visitStringLiteral, visitTemplateElement } = require('./recast');
 const { getState } = require('../stores/global');
+const babelParser = require("recast/parsers/babylon");
 
 const count = (path, content, quiet) => {
   try {
-    const ast = parse(content);
+    const ast = parse(content, {
+      parser: babelParser
+    });
     visit(ast, {
       visitStringLiteral: visitStringLiteral,
       visitTemplateElement: visitTemplateElement,
